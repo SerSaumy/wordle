@@ -3,6 +3,7 @@ class WordleSolver {
         this.allWords = [];
         this.possibleWords = [];
         this.attempts = [];
+        this.lastValidSuggestions = [];
         this.constraints = {
             green: {},
             yellow: new Set(),
@@ -31,6 +32,7 @@ class WordleSolver {
             
             this.allWords = [...new Set([...answers, ...guesses])];
             this.possibleWords = [...this.allWords];
+            this.lastValidSuggestions = [...this.allWords];
             
             document.getElementById('wordCount').textContent = `${this.allWords.length.toLocaleString()} words loaded`;
             this.updateDisplay();
@@ -38,6 +40,7 @@ class WordleSolver {
             console.error('Error loading words:', error);
             this.allWords = ['soare', 'roate', 'raise', 'slate', 'crane', 'crate', 'trace', 'stare', 'audio', 'about'];
             this.possibleWords = [...this.allWords];
+            this.lastValidSuggestions = [...this.allWords];
             document.getElementById('wordCount').textContent = 'Using fallback word list';
         }
     }
@@ -54,7 +57,7 @@ class WordleSolver {
             if (e.key === 'Tab') {
                 e.preventDefault();
                 const suggestedWord = document.getElementById('suggestion').textContent;
-                if (suggestedWord && suggestedWord !== '---') {
+                if (suggestedWord) {
                     wordInput.value = suggestedWord;
                 }
                 feedbackInput.focus();
@@ -114,6 +117,10 @@ class WordleSolver {
             return;
         }
         
+        if (this.possibleWords.length > 0) {
+            this.lastValidSuggestions = [...this.possibleWords];
+        }
+        
         this.applyFeedback(word, feedback);
         this.attempts.push({ word, feedback });
         
@@ -127,7 +134,7 @@ class WordleSolver {
         this.updateDisplay();
         
         if (this.possibleWords.length === 0) {
-            alert('⚠️ No words match your feedback!\n\nDouble-check your feedback pattern.');
+            alert('⚠️ No exact matches found!\n\nUsing next best suggestion from previous list.');
         }
     }
     
@@ -187,17 +194,30 @@ class WordleSolver {
     }
     
     getBestSuggestion() {
-        if (this.possibleWords.length === 0) return '---';
-        if (this.possibleWords.length === 1) return this.possibleWords[0];
-        
-        if (this.attempts.length === 0) {
-            const starters = ['soare', 'roate', 'raise', 'slate', 'crane'];
-            for (const starter of starters) {
-                if (this.allWords.includes(starter)) return starter;
+        if (this.possibleWords.length > 0) {
+            if (this.possibleWords.length === 1) {
+                return this.possibleWords[0];
             }
+            
+            if (this.attempts.length === 0) {
+                const starters = ['soare', 'roate', 'raise', 'slate', 'crane'];
+                for (const starter of starters) {
+                    if (this.possibleWords.includes(starter)) return starter;
+                }
+            }
+            
+            return this.possibleWords[0];
         }
         
-        return this.possibleWords[0];
+        if (this.lastValidSuggestions.length > 1) {
+            return this.lastValidSuggestions[1];
+        }
+        
+        if (this.lastValidSuggestions.length > 0) {
+            return this.lastValidSuggestions[0];
+        }
+        
+        return 'raise';
     }
     
     updateDisplay() {
@@ -216,7 +236,7 @@ class WordleSolver {
         
         const wordsList = document.getElementById('wordsList');
         if (possible === 0) {
-            wordsList.textContent = 'No words match your feedback!';
+            wordsList.textContent = 'No exact matches! Using fallback suggestions.';
         } else if (possible <= 200) {
             let html = '';
             for (let i = 0; i < possible; i += 5) {
@@ -287,6 +307,10 @@ class WordleSolver {
             this.applyFeedback(attempt.word, attempt.feedback);
         });
         
+        if (this.possibleWords.length > 0) {
+            this.lastValidSuggestions = [...this.possibleWords];
+        }
+        
         if (this.attempts.length === 0) {
             document.getElementById('undoBtn').disabled = true;
         }
@@ -304,6 +328,7 @@ class WordleSolver {
         
         this.attempts = [];
         this.possibleWords = [...this.allWords];
+        this.lastValidSuggestions = [...this.allWords];
         this.constraints = {
             green: {},
             yellow: new Set(),
@@ -321,7 +346,7 @@ class WordleSolver {
     
     copySuggestion() {
         const suggestion = document.getElementById('suggestion').textContent;
-        if (suggestion && suggestion !== '---') {
+        if (suggestion) {
             document.getElementById('wordInput').value = suggestion;
             document.getElementById('wordInput').focus();
         }
