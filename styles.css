@@ -66,7 +66,7 @@ body {
 header {
     background-color: #FFFFFF;
     border-bottom: 2px solid #628141;
-    padding: 28px 0;
+    padding: 24px 0;
     box-shadow: 0 2px 12px rgba(98, 129, 65, 0.15);
 }
 
@@ -80,6 +80,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .logo h1 {
@@ -115,14 +121,13 @@ header {
 
 main {
     flex: 1;
-    padding: 40px 0 0 0;
+    padding: 40px 0;
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 32px;
-    margin-bottom: 0;
 }
 
 .left-column {
@@ -259,7 +264,7 @@ main {
 }
 
 .btn {
-    padding: 18px 32px;
+    padding: 16px 28px;
     font-size: 14px;
     font-weight: 600;
     border: none;
@@ -268,7 +273,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     transition: all 0.2s;
@@ -302,15 +307,16 @@ main {
     opacity: 0.5;
 }
 
-.btn-outline {
-    background-color: transparent;
-    color: #C17767;
-    border: 2px solid #C17767;
-}
-
-.btn-outline:hover {
+.btn-reset {
     background-color: #C17767;
     color: #FFFFFF;
+    padding: 12px 24px;
+    font-size: 13px;
+}
+
+.btn-reset:hover {
+    background-color: #A55D4F;
+    transform: translateY(-2px);
 }
 
 .suggestion-card {
@@ -456,29 +462,18 @@ main {
     border-radius: 8px;
     max-height: 420px;
     overflow-y: auto;
-    font-family: 'Pixform', monospace;
+    font-family: 'Monday Sans', sans-serif;
     font-size: 14px;
-    line-height: 2.2;
+    line-height: 2;
     color: #1B211A;
     font-weight: 400;
-}
-
-.reset-action {
-    text-align: center;
-    margin: 30px 0 40px 0;
-    padding: 0;
-}
-
-.reset-action .btn {
-    min-width: 280px;
-    font-size: 14px;
 }
 
 footer {
     background-color: #FFFFFF;
     border-top: 2px solid #8BAE66;
     padding: 24px 0;
-    margin-top: auto;
+    margin-top: 40px;
     text-align: center;
     font-size: 14px;
     color: #628141;
@@ -498,6 +493,11 @@ footer a:hover {
 @media (max-width: 1200px) {
     .grid {
         grid-template-columns: 1fr;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
     }
 }
 
