@@ -2,18 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Smart AI-powered Wordle solver to help you win every game. Get optimal word suggestions based on feedback patterns.">
-    <meta name="theme-color" content="#628141">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle Solver - AI Assistant</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
-        <link rel="preconnect" href="https://gist.githubusercontent.com">
-        <link rel="dns-prefetch" href="https://gist.githubusercontent.com">
-
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
+    
+    <link rel="preconnect" href="https://gist.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://gist.githubusercontent.com">
 </head>
 <body>
     <header>
@@ -21,13 +16,12 @@
             <div class="header-content">
                 <div class="logo">
                     <h1><span class="logo-bold">Wordle</span> <span class="logo-light">Solver</span></h1>
-                    <p class="subtitle" id="wordCount" aria-live="polite">Loading word database...</p>
+                    <p class="subtitle" id="wordCount">Loading word database...</p>
                 </div>
                 <div class="header-actions">
-                    <span id="headerStats" class="header-stats" aria-live="polite">Ready to solve</span>
-                    <button id="resetBtn" class="btn btn-reset" aria-label="Start new game">
-                        <span aria-hidden="true">↻</span> New Game
-                        <span class="btn-shortcut">Ctrl+Enter</span>
+                    <span id="headerStats" class="header-stats">Ready to solve</span>
+                    <button id="resetBtn" class="btn btn-reset">
+                        <span>↻</span> New Game
                     </button>
                 </div>
             </div>
@@ -38,15 +32,15 @@
         <!-- Sticky suggestion bar for mobile -->
         <div class="suggestion-sticky">
             <div class="suggestion-sticky-content">
-                <span class="suggestion-label">Next Sugession</span>
+                <span class="suggestion-label">Next Word</span>
                 <div id="suggestionSticky" class="suggestion-word-sticky">SOARE</div>
             </div>
         </div>
 
         <div class="grid">
             <div class="left-column">
-                <section class="card card-compact" aria-labelledby="input-heading">
-                    <h2 id="input-heading">Enter Your Guess</h2>
+                <div class="card">
+                    <h2>Enter Your Guess</h2>
                     <p class="description">Type the word you guessed in Wordle</p>
                     
                     <input 
@@ -56,23 +50,24 @@
                         placeholder="Type word here..."
                         maxlength="5"
                         autocomplete="off"
-                        autocapitalize="characters"
-                        spellcheck="false"
-                        aria-describedby="word-hint"
                     >
                     
-                    <div class="keyboard-hints" id="word-hint" role="note">
-                        <span class="hint-icon" aria-hidden="true">⌨</span>
-                        <kbd class="kbd">Tab</kbd>
+                    <div class="keyboard-hints">
+                        <span class="hint-icon">⌨</span>
+                        <span class="kbd">Tab</span>
                         <span class="hint-text">= use suggestion  •  </span>
-                        <kbd class="kbd">Enter</kbd>
-                        <span class="hint-text">= next</span>
+                        <span class="kbd">Enter</span>
+                        <span class="hint-text">= use typed word</span>
                     </div>
 
-                    <h2 style="margin-top: 20px;">Feedback Pattern</h2>
-                    <p class="description">G = Green • Y = Yellow • B = Black</p>
+                    <h2 style="margin-top: 30px;">Enter Feedback Pattern</h2>
+                    <p class="description">Use: G (Green), Y (Yellow), B (Black/Gray)</p>
+                    
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>
+                        Example: "GYBBB" = Green, Yellow, Black, Black, Black
+                    </div>
 
-                    <label for="feedbackInput" class="visually-hidden">Feedback pattern (G, Y, or B)</label>
                     <input 
                         type="text" 
                         id="feedbackInputDesktop" 
@@ -80,86 +75,72 @@
                         placeholder="e.g., GYBBB"
                         maxlength="5"
                         autocomplete="off"
-                        autocapitalize="characters"
-                        spellcheck="false"
-                        aria-describedby="feedback-hint"
                     >
 
-                    <div class="keyboard-hints" id="feedback-hint" role="note">
-                        <span class="hint-icon" aria-hidden="true">⌨</span>
-                        <kbd class="kbd">Enter</kbd>
-                        <span class="hint-text">= analyze</span>
+                    <div class="keyboard-hints">
+                        <span class="hint-icon">⌨</span>
+                        <span class="kbd">Enter</span>
+                        <span class="hint-text">= analyze guess</span>
                     </div>
 
                     <div class="button-row">
-                        <button id="analyzeBtn" class="btn btn-primary" aria-label="Analyze your guess">
-                            <span aria-hidden="true">✓</span> Analyze
+                        <button id="analyzeBtn" class="btn btn-primary">
+                            <span>✓</span> Analyze Guess
                         </button>
-                        <button id="undoBtn" class="btn btn-danger" disabled aria-label="Undo last guess">
-                            <span aria-hidden="true">↶</span> Undo
+                        <button id="undoBtn" class="btn btn-danger" disabled>
+                            <span>↶</span> Undo Last
                         </button>
                     </div>
-                    <div class="keyboard-shortcuts">
-                        <span class="shortcut-item"><kbd class="kbd-mini">Ctrl</kbd>+<kbd class="kbd-mini">Z</kbd> Undo</span>
-                        <span class="shortcut-divider">•</span>
-                        <span class="shortcut-item"><kbd class="kbd-mini">Ctrl</kbd>+<kbd class="kbd-mini">Enter</kbd> New Game</span>
-                    </div>
-                </section>
+                </div>
 
-                <section class="card card-compact" aria-labelledby="history-heading">
+                <div class="card">
                     <div class="card-header">
-                        <h2 id="history-heading">History</h2>
-                        <span id="attemptCount" class="count-badge" aria-live="polite">0 attempts</span>
+                        <h2>Attempt History</h2>
+                        <span id="attemptCount" class="count-badge">0 attempts</span>
                     </div>
-                    <div id="historyContainer" class="history-container" role="log" aria-live="polite" aria-atomic="false">
-                        <p class="empty-state">No attempts yet</p>
+                    <div id="historyContainer" class="history-container">
+                        <p class="empty-state">No attempts yet. Enter your first guess above!</p>
                     </div>
                 </div>
             </div>
 
             <div class="right-column">
-                <section class="card suggestion-card" aria-labelledby="suggestion-heading">
-                    <h2 id="suggestion-heading">Recommended Word</h2>
-                    <p class="description">Press Tab to use this word</p>
+                <div class="card suggestion-card">
+                    <h2>Recommended Word</h2>
+                    <p class="description">Press Tab in word field to use this</p>
                     
                     <div class="suggestion-box">
                         <div id="suggestion" class="suggestion-word">SOARE</div>
                     </div>
                 </div>
 
-                <section class="card card-compact" aria-labelledby="stats-heading">
-                    <h2 id="stats-heading">Stats</h2>
+                <div class="card">
+                    <h2>Statistics</h2>
                     <div class="stats-grid">
                         <div class="stat-item stat-primary">
-                            <span class="stat-label">Possible</span>
-                            <span id="possibleCount" class="stat-value" aria-live="polite">12,972</span>
+                            <span class="stat-label">Possible Words</span>
+                            <span id="possibleCount" class="stat-value">12,972</span>
                         </div>
                         <div class="stat-item stat-success">
-                            <span class="stat-label">Attempts</span>
-                            <span id="attemptsCount" class="stat-value" aria-live="polite">0</span>
+                            <span class="stat-label">Attempts Made</span>
+                            <span id="attemptsCount" class="stat-value">0</span>
                         </div>
                         <div class="stat-item stat-gray">
-                            <span class="stat-label">Eliminated</span>
-                            <span id="eliminatedCount" class="stat-value" aria-live="polite">0</span>
+                            <span class="stat-label">Words Eliminated</span>
+                            <span id="eliminatedCount" class="stat-value">0</span>
                         </div>
                     </div>
                 </div>
 
-                <section class="card card-compact" aria-labelledby="words-heading">
+                <div class="card">
                     <div class="card-header">
-                        <h2 id="words-heading">Possible Words</h2>
-                        <span id="wordsCount" class="count-badge primary" aria-live="polite">12,972</span>
+                        <h2>Possible Words</h2>
+                        <span id="wordsCount" class="count-badge primary">12,972</span>
                     </div>
-                    <div 
-                        id="wordsList" 
-                        class="words-list" 
-                        role="region" 
-                        aria-label="List of possible words"
-                        tabindex="0"
-                    >
+                    <div id="wordsList" class="words-list">
                         Loading words...
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
@@ -184,9 +165,9 @@
         </div>
     </main>
 
-    <footer role="contentinfo">
+    <footer>
         <div class="container">
-            <p>Made for Wordle enthusiasts • <a href="https://github.com/sersaumy/wordle" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>
+            <p>Made for Wordle enthusiasts • <a href="https://github.com/sersaumy/wordle" target="_blank">View on GitHub</a></p>
         </div>
     </footer>
 
