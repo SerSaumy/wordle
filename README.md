@@ -140,6 +140,6 @@ MIT License - Free to use for personal or educational purposes.
 ---
 ## 🌐 Try It Online
 
-**Live Demo**: [https://YOUR_USERNAME.github.io/wordle-solver/](https://YOUR_USERNAME.github.io/wordle-solver/)
+**Live Demo**: [https://sersaumy.github.io/wordle/](https://sersaumy.github.io/wordle/)
 
 No installation needed! Use it directly in your browser.
