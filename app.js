@@ -1,5 +1,3 @@
-// Wordle Solver - Main JavaScript
-
 class WordleSolver {
     constructor() {
         this.allWords = [];
@@ -23,12 +21,10 @@ class WordleSolver {
     
     async loadWords() {
         try {
-            // Load Wordle answers
             const answersRes = await fetch('https://gist.githubusercontent.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b/raw/wordle-answers-alphabetical.txt');
             const answersText = await answersRes.text();
             const answers = answersText.split('\n').map(w => w.trim().toLowerCase()).filter(w => w.length === 5);
             
-            // Load valid guesses
             const guessesRes = await fetch('https://gist.githubusercontent.com/cfreshman/cdcdf777450c5b5301e439061d29694c/raw/wordle-allowed-guesses.txt');
             const guessesText = await guessesRes.text();
             const guesses = guessesText.split('\n').map(w => w.trim().toLowerCase()).filter(w => w.length === 5);
@@ -40,8 +36,7 @@ class WordleSolver {
             this.updateDisplay();
         } catch (error) {
             console.error('Error loading words:', error);
-            // Fallback word list
-            this.allWords = ['soare', 'roate', 'raise', 'slate', 'crane', 'crate', 'trace', 'least', 'stare', 'audio'];
+            this.allWords = ['soare', 'roate', 'raise', 'slate', 'crane', 'crate', 'trace', 'stare', 'audio', 'about'];
             this.possibleWords = [...this.allWords];
             document.getElementById('wordCount').textContent = 'Using fallback word list';
         }
@@ -55,26 +50,27 @@ class WordleSolver {
         const resetBtn = document.getElementById('resetBtn');
         const suggestion = document.getElementById('suggestion');
         
-        // Tab autocomplete
         wordInput.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 e.preventDefault();
                 const suggestedWord = document.getElementById('suggestion').textContent;
-                wordInput.value = suggestedWord;
+                if (suggestedWord && suggestedWord !== '---') {
+                    wordInput.value = suggestedWord;
+                }
                 feedbackInput.focus();
             } else if (e.key === 'Enter') {
+                e.preventDefault();
                 feedbackInput.focus();
             }
         });
         
-        // Enter to analyze
         feedbackInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 this.processGuess();
             }
         });
         
-        // Force uppercase
         wordInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
@@ -93,7 +89,6 @@ class WordleSolver {
         const word = document.getElementById('wordInput').value.trim().toLowerCase();
         const feedback = document.getElementById('feedbackInput').value.trim().toUpperCase();
         
-        // Validation
         if (word.length !== 5) {
             alert('Word must be exactly 5 letters!');
             return;
@@ -114,30 +109,25 @@ class WordleSolver {
             return;
         }
         
-        // Check if solved
         if (feedback === 'GGGGG') {
             alert(`🎉 Solved in ${this.attempts.length + 1} attempts!\n\nThe word was: ${word.toUpperCase()}`);
             return;
         }
         
-        // Process feedback
         this.applyFeedback(word, feedback);
         this.attempts.push({ word, feedback });
         
-        // Clear inputs
         document.getElementById('wordInput').value = '';
         document.getElementById('feedbackInput').value = '';
         document.getElementById('wordInput').focus();
         
-        // Enable undo
         document.getElementById('undoBtn').disabled = false;
         
-        // Update display
         this.updateHistory();
         this.updateDisplay();
         
         if (this.possibleWords.length === 0) {
-            alert('No words match your feedback!\n\nPlease check your input.');
+            alert('⚠️ No words match your feedback!\n\nDouble-check your feedback pattern.');
         }
     }
     
@@ -155,7 +145,15 @@ class WordleSolver {
                 }
                 this.constraints.yellowNot[letter].add(i);
             } else if (status === 'B') {
-                if (!this.constraints.yellow.has(letter) && !Object.values(this.constraints.green).includes(letter)) {
+                let isGreenOrYellow = false;
+                if (Object.values(this.constraints.green).includes(letter)) {
+                    isGreenOrYellow = true;
+                }
+                if (this.constraints.yellow.has(letter)) {
+                    isGreenOrYellow = true;
+                }
+                
+                if (!isGreenOrYellow) {
                     this.constraints.gray.add(letter);
                 }
             }
@@ -166,12 +164,10 @@ class WordleSolver {
     
     filterWords() {
         this.possibleWords = this.possibleWords.filter(word => {
-            // Check green letters
             for (const [pos, letter] of Object.entries(this.constraints.green)) {
                 if (word[pos] !== letter) return false;
             }
             
-            // Check yellow letters
             for (const letter of this.constraints.yellow) {
                 if (!word.includes(letter)) return false;
                 
@@ -182,7 +178,6 @@ class WordleSolver {
                 }
             }
             
-            // Check gray letters
             for (const letter of this.constraints.gray) {
                 if (word.includes(letter)) return false;
             }
@@ -195,7 +190,6 @@ class WordleSolver {
         if (this.possibleWords.length === 0) return '---';
         if (this.possibleWords.length === 1) return this.possibleWords[0];
         
-        // First guess: return optimal starter
         if (this.attempts.length === 0) {
             const starters = ['soare', 'roate', 'raise', 'slate', 'crane'];
             for (const starter of starters) {
@@ -203,7 +197,6 @@ class WordleSolver {
             }
         }
         
-        // Return first possible word
         return this.possibleWords[0];
     }
     
@@ -221,7 +214,6 @@ class WordleSolver {
         document.getElementById('wordsCount').textContent = possible.toLocaleString();
         document.getElementById('headerStats').textContent = `${possible.toLocaleString()} possible • ${this.attempts.length} attempts`;
         
-        // Update words list
         const wordsList = document.getElementById('wordsList');
         if (possible === 0) {
             wordsList.textContent = 'No words match your feedback!';
@@ -283,7 +275,6 @@ class WordleSolver {
         
         this.attempts.pop();
         
-        // Reset and reapply all attempts
         this.possibleWords = [...this.allWords];
         this.constraints = {
             green: {},
@@ -330,10 +321,11 @@ class WordleSolver {
     
     copySuggestion() {
         const suggestion = document.getElementById('suggestion').textContent;
-        document.getElementById('wordInput').value = suggestion;
-        document.getElementById('wordInput').focus();
+        if (suggestion && suggestion !== '---') {
+            document.getElementById('wordInput').value = suggestion;
+            document.getElementById('wordInput').focus();
+        }
     }
 }
 
-// Initialize
 const solver = new WordleSolver();
