@@ -1,0 +1,154 @@
+17:41:27 - WordleBot - INFO - ======================================================================
+17:41:27 - WordleBot - INFO - ======================================================================
+17:41:27 - WordleBot - INFO - Starting application...
+17:42:38 - WordleBot - INFO - ======================================================================
+17:42:38 - WordleBot - INFO - ======================================================================
+17:42:38 - WordleBot - INFO - Starting application...
+17:51:46 - WordleBot - INFO - ======================================================================
+17:51:46 - WordleBot - INFO - ======================================================================
+17:51:46 - WordleBot - INFO - Starting application...
+17:51:46 - WordleBot - ERROR - Fatal error: 'GameViewer' object has no attribute '_create_stat_label'
+17:53:36 - WordleBot - INFO - ======================================================================
+17:53:36 - WordleBot - INFO - ======================================================================
+17:53:36 - WordleBot - INFO - Starting application...
+17:53:56 - WordleBot - INFO - Empty learned words file, initializing...
+17:53:56 - WordleBot - DEBUG - Saved 0 words to database
+17:54:19 - WordleBot - INFO - Loaded 0 learned words
+17:54:35 - WordleBot - INFO - ======================================================================
+17:54:35 - WordleBot - INFO - ======================================================================
+17:54:35 - WordleBot - INFO - Starting application...
+17:54:49 - WordleBot - INFO - Loaded 0 learned words
+18:01:58 - WordleBot - INFO - ======================================================================
+18:01:58 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:01:58 - WordleBot - INFO - ======================================================================
+18:02:08 - WordleBot - INFO - Loaded 0 learned words
+18:02:08 - WordleBot - INFO - [SYSTEM] Empty history file, initializing...
+18:02:08 - WordleBot - DEBUG - [SAVE] History saved
+18:02:08 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:02:10 - WordleBot - ERROR - Failed to start browser: 'NoneType' object has no attribute 'split'
+18:02:26 - WordleBot - INFO - Loaded 0 learned words
+18:02:26 - WordleBot - INFO - [SYSTEM] Loaded history: 0 games
+18:02:27 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:02:27 - WordleBot - INFO - Loaded 0 learned words
+18:02:27 - WordleBot - INFO - [SYSTEM] Loaded history: 0 games
+18:02:27 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:02:29 - WordleBot - ERROR - Failed to start browser: 'NoneType' object has no attribute 'split'
+18:02:29 - WordleBot - ERROR - Failed to start browser: 'NoneType' object has no attribute 'split'
+18:10:01 - WordleBot - INFO - ======================================================================
+18:10:01 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:10:01 - WordleBot - INFO - ======================================================================
+18:10:01 - WordleBot - ERROR - [FATAL] cannot use geometry manager grid inside .!frame2.!frame2.!frame.!frame.!frame which already has slaves managed by pack
+18:10:14 - WordleBot - INFO - ======================================================================
+18:10:14 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:10:14 - WordleBot - INFO - ======================================================================
+18:10:14 - WordleBot - ERROR - [FATAL] name 'RetroPixelUI' is not defined
+18:14:59 - WordleBot - INFO - ======================================================================
+18:14:59 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:14:59 - WordleBot - INFO - ======================================================================
+18:14:59 - WordleBot - ERROR - [FATAL] cannot use geometry manager grid inside .!frame2.!frame2.!frame.!frame.!frame which already has slaves managed by pack
+18:17:26 - WordleBot - INFO - ======================================================================
+18:17:26 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:17:26 - WordleBot - INFO - ======================================================================
+18:17:42 - WordleBot - INFO - Loaded 0 learned words
+18:17:42 - WordleBot - INFO - [SYSTEM] Loaded history: 0 games
+18:17:42 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:17:42 - WordleBot - INFO - Attempting to start Firefox...
+18:18:34 - WordleBot - INFO - Loaded 0 learned words
+18:18:34 - WordleBot - INFO - [SYSTEM] Loaded history: 0 games
+18:18:34 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:18:34 - WordleBot - INFO - Attempting to start Firefox...
+18:18:39 - WordleBot - INFO - Navigated to https://mikhad.github.io/wordle/#daily
+18:18:39 - WordleBot - INFO - [BOT] Bot ready to learn!
+18:19:07 - WordleBot - INFO - Navigated to https://mikhad.github.io/wordle/#daily
+18:19:07 - WordleBot - INFO - [BOT] Bot ready to learn!
+18:20:28 - WordleBot - INFO - Browser closed
+18:20:28 - WordleBot - DEBUG - [SAVE] History saved
+18:20:28 - WordleBot - INFO - [BOT] Bot stopped
+18:29:56 - WordleBot - INFO - ======================================================================
+18:29:56 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:29:56 - WordleBot - INFO - ======================================================================
+18:30:09 - WordleBot - INFO - Loaded 0 learned words
+18:30:09 - WordleBot - INFO - [SYSTEM] Loaded history: 0 games
+18:30:09 - WordleBot - INFO - [BOT] Starting Wordle Learning Bot...
+18:30:09 - WordleBot - INFO - Trying Firefox...
+18:30:19 - WordleBot - INFO - Started Firefox successfully!
+18:30:19 - WordleBot - INFO - Navigating to https://wordplay.com...
+18:30:41 - WordleBot - INFO - Game loaded!
+18:30:41 - WordleBot - INFO - [BOT] Bot ready to learn!
+18:30:44 - WordleBot - INFO - [SESSION] Starting learning session: 1 games
+18:30:44 - WordleBot - INFO - 
+============================================================
+18:30:44 - WordleBot - INFO - [GAME] Starting Game #1
+18:30:44 - WordleBot - INFO - [VOCAB] Current vocabulary: 0 words
+18:30:44 - WordleBot - INFO - ============================================================
+
+18:30:44 - WordleBot - INFO - [EXPLORE] Attempt 1/6: 'ETAOI'
+18:30:47 - WordleBot - DEBUG - Entered: ETAOI
+18:30:54 - WordleBot - DEBUG - Saved 1 words to database
+18:30:54 - WordleBot - INFO - [LEARNED] New word: ETAOI (Total: 1)
+18:31:10 - WordleBot - INFO - [SESSION] Starting learning session: 10 games
+18:31:10 - WordleBot - INFO - 
+============================================================
+18:31:10 - WordleBot - INFO - [GAME] Starting Game #1
+18:31:10 - WordleBot - INFO - [VOCAB] Current vocabulary: 1 words
+18:31:10 - WordleBot - INFO - ============================================================
+
+18:31:10 - WordleBot - INFO - [EXPLORE] Attempt 1/6: 'ETAOI'
+18:31:10 - WordleBot - WARNING - Could not find row element
+18:31:10 - WordleBot - WARNING - [WARN] Could not get feedback, retrying...
+18:31:15 - WordleBot - DEBUG - Entered: ETAOI
+18:31:28 - WordleBot - WARNING - Could not find row element
+18:31:29 - WordleBot - INFO - [EXPLORE] Attempt 2/6: 'ETAOI'
+18:31:36 - WordleBot - DEBUG - Entered: ETAOI
+18:31:43 - WordleBot - WARNING - Could not find row element
+18:31:43 - WordleBot - WARNING - [WARN] Could not get feedback, retrying...
+18:31:43 - WordleBot - INFO - Browser closed
+18:31:43 - WordleBot - DEBUG - [SAVE] History saved
+18:31:43 - WordleBot - INFO - [BOT] Bot stopped
+18:38:14 - WordleBot - INFO - ======================================================================
+18:38:14 - WordleBot - INFO - [BOT] WORDLE SELF-LEARNING BOT
+18:38:14 - WordleBot - INFO - ======================================================================
+18:38:17 - WordleBot - INFO - Loaded 65 words (including 64 starters)
+18:38:17 - WordleBot - INFO - [SYSTEM] Loaded 0 games
+18:38:17 - WordleBot - INFO - [BOT] Starting...
+18:38:17 - WordleBot - INFO - Trying Firefox...
+18:38:26 - WordleBot - INFO - Started Firefox!
+18:38:27 - WordleBot - INFO - Loading https://wordplay.com...
+18:38:36 - WordleBot - INFO - Game loaded!
+18:38:36 - WordleBot - INFO - [BOT] Ready!
+18:38:39 - WordleBot - INFO - [SESSION] Playing 1 games
+18:38:39 - WordleBot - INFO - 
+============================================================
+18:38:39 - WordleBot - INFO - [GAME #1] Starting | Vocab: 65 words
+18:38:39 - WordleBot - INFO - ============================================================
+18:38:39 - WordleBot - INFO - [ATTEMPT 1/6] Trying: WHERE
+18:38:53 - WordleBot - WARNING - [INVALID] 'WHERE' not in word list
+18:38:53 - WordleBot - DEBUG - Saved 65 words
+18:38:53 - WordleBot - DEBUG - [INVALID] WHERE
+18:38:53 - WordleBot - INFO - [ATTEMPT 2/6] Smart guess: TARES
+18:39:07 - WordleBot - WARNING - [INVALID] 'TARES' not in word list
+18:39:07 - WordleBot - DEBUG - Saved 65 words
+18:39:07 - WordleBot - DEBUG - [INVALID] TARES
+18:39:07 - WordleBot - INFO - [ATTEMPT 3/6] Smart guess: TARES
+18:39:21 - WordleBot - WARNING - [INVALID] 'TARES' not in word list
+18:39:21 - WordleBot - INFO - [ATTEMPT 4/6] Smart guess: TARES
+18:39:35 - WordleBot - WARNING - [INVALID] 'TARES' not in word list
+18:39:35 - WordleBot - INFO - [ATTEMPT 5/6] Smart guess: TARES
+18:39:49 - WordleBot - WARNING - [INVALID] 'TARES' not in word list
+18:39:49 - WordleBot - INFO - [ATTEMPT 6/6] Smart guess: TARES
+18:40:03 - WordleBot - WARNING - [INVALID] 'TARES' not in word list
+18:40:06 - WordleBot - INFO - Refreshing for new game...
+18:40:14 - WordleBot - INFO - [SESSION] Complete!
+18:40:14 - WordleBot - INFO - 
+============================================================
+18:40:14 - WordleBot - INFO - [STATS] SESSION SUMMARY
+18:40:14 - WordleBot - INFO - ============================================================
+18:40:14 - WordleBot - INFO - Total Games: 1
+18:40:14 - WordleBot - INFO - Won: 0 (0.0%)
+18:40:14 - WordleBot - INFO - Lost: 1
+18:40:14 - WordleBot - INFO - Avg Attempts: 0.00
+18:40:14 - WordleBot - INFO - Vocabulary: 65 words
+18:40:14 - WordleBot - INFO - ============================================================
+
+18:40:48 - WordleBot - INFO - 
+[EXIT] Application stopped by user

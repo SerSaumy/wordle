@@ -1,0 +1,14 @@
+{
+  "total_games": 1,
+  "games_won": 0,
+  "games_lost": 1,
+  "total_attempts": 0,
+  "words_learned": 65,
+  "learning_curve": [
+    {
+      "game": 1,
+      "vocabulary": 65,
+      "won": false
+    }
+  ]
+}
