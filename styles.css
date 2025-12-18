@@ -1,3 +1,52 @@
+@font-face {
+    font-family: 'Monday Sans';
+    src: url('fonts/MondaySans.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dimica';
+    src: url('fonts/dimica-light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Friends';
+    src: url('fonts/Friends-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Friends';
+    src: url('fonts/Friends-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Friends';
+    src: url('fonts/Friends-UltraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixform';
+    src: url('fonts/Pixform.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Rampiro';
+    src: url('fonts/RampiroDEMO.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,7 +54,7 @@
 }
 
 body {
-    font-family: 'Georgia', 'Baskerville', 'Times New Roman', serif;
+    font-family: 'Monday Sans', -apple-system, sans-serif;
     background-color: #EBD5AB;
     color: #1B211A;
     line-height: 1.6;
@@ -34,31 +83,34 @@ header {
 }
 
 .logo h1 {
-    font-size: 32px;
-    font-weight: 500;
-    font-family: 'Garamond', 'Baskerville', serif;
+    font-size: 36px;
+    font-weight: 300;
+    font-family: 'Dimica', serif;
+    letter-spacing: 2px;
 }
 
 .logo-bold {
-    font-weight: 700;
+    font-weight: 300;
     color: #1B211A;
 }
 
 .logo-light {
-    font-weight: 400;
+    font-weight: 300;
     color: #628141;
 }
 
 .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: #628141;
-    margin-top: 4px;
+    margin-top: 6px;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .header-stats {
-    font-size: 15px;
+    font-size: 14px;
     color: #628141;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 main {
@@ -99,17 +151,19 @@ main {
 }
 
 .card h2 {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 300;
     color: #1B211A;
     margin-bottom: 8px;
-    font-family: 'Garamond', 'Baskerville', serif;
+    font-family: 'Dimica', serif;
+    letter-spacing: 1px;
 }
 
 .description {
     font-size: 15px;
     color: #628141;
     margin-bottom: 24px;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .card-header {
@@ -122,8 +176,8 @@ main {
 .input-field {
     width: 100%;
     padding: 18px 24px;
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 400;
     background-color: #F5F0E5;
     border: 2px solid #8BAE66;
     border-radius: 8px;
@@ -131,7 +185,8 @@ main {
     text-transform: uppercase;
     outline: none;
     transition: all 0.2s;
-    font-family: 'Courier New', monospace;
+    font-family: 'Pixform', monospace;
+    letter-spacing: 8px;
 }
 
 .input-field:focus {
@@ -142,7 +197,9 @@ main {
 
 .input-field::placeholder {
     color: #8BAE66;
-    opacity: 0.6;
+    opacity: 0.5;
+    letter-spacing: 2px;
+    font-size: 24px;
 }
 
 .keyboard-hints {
@@ -151,6 +208,7 @@ main {
     margin: 12px 0 24px 0;
     font-size: 13px;
     color: #628141;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .hint-icon {
@@ -163,15 +221,18 @@ main {
     color: #FFFFFF;
     padding: 4px 12px;
     border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 400;
     margin: 0 6px;
-    font-family: 'Courier New', monospace;
+    font-family: 'Friends', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .hint-text {
     color: #628141;
     font-size: 13px;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .info-box {
@@ -182,6 +243,7 @@ main {
     margin-bottom: 24px;
     font-size: 14px;
     color: #1B211A;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .info-icon {
@@ -198,7 +260,7 @@ main {
 
 .btn {
     padding: 18px 32px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     border: none;
     border-radius: 8px;
@@ -208,9 +270,9 @@ main {
     justify-content: center;
     gap: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
     transition: all 0.2s;
-    font-family: 'Georgia', serif;
+    font-family: 'Friends', sans-serif;
 }
 
 .btn-primary {
@@ -274,18 +336,19 @@ main {
 }
 
 .suggestion-word {
-    font-size: 72px;
-    font-weight: 700;
+    font-size: 80px;
+    font-weight: 400;
     color: #EBD5AB;
-    letter-spacing: 16px;
+    letter-spacing: 24px;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'Garamond', serif;
+    font-family: 'Rampiro', display;
 }
 
 .suggestion-word:hover {
     color: #8BAE66;
     transform: scale(1.05);
+    letter-spacing: 28px;
 }
 
 .stats-grid {
@@ -312,12 +375,14 @@ main {
 .stat-label {
     font-size: 14px;
     color: #628141;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .stat-value {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 400;
+    font-family: 'Pixform', monospace;
 }
 
 .stat-primary .stat-value {
@@ -333,9 +398,10 @@ main {
 }
 
 .count-badge {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 400;
     color: #628141;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .count-badge.primary {
@@ -349,7 +415,7 @@ main {
     border-radius: 8px;
     max-height: 280px;
     overflow-y: auto;
-    font-family: 'Courier New', monospace;
+    font-family: 'Pixform', monospace;
 }
 
 .empty-state {
@@ -357,12 +423,13 @@ main {
     text-align: center;
     padding: 24px;
     font-size: 15px;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 .history-item {
     margin-bottom: 12px;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .history-number {
@@ -389,11 +456,11 @@ main {
     border-radius: 8px;
     max-height: 420px;
     overflow-y: auto;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 2;
+    font-family: 'Pixform', monospace;
+    font-size: 14px;
+    line-height: 2.2;
     color: #1B211A;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .reset-action {
@@ -404,7 +471,7 @@ main {
 
 .reset-action .btn {
     min-width: 280px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 footer {
@@ -415,12 +482,13 @@ footer {
     text-align: center;
     font-size: 14px;
     color: #628141;
+    font-family: 'Monday Sans', sans-serif;
 }
 
 footer a {
     color: #628141;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 footer a:hover {
