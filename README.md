@@ -29,8 +29,8 @@ A beautiful, fast, and intelligent solver that helps you win at Wordle using inf
 ### Installation
 
 1. **Clone the repository:**
-git clone https://github.com/YOUR_USERNAME/wordle-solver.git
-cd wordle-solver
+''git clone https://github.com/YOUR_USERNAME/wordle-solver.git
+cd wordle-solver''
 
 text
 
