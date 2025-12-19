@@ -11,58 +11,14 @@ class WordleSolver {
             yellowNot: {}
         };
         
-        this.usageData = this.loadUsageData();
-        
         this.init();
-    }
-    
-    loadUsageData() {
-        const stored = localStorage.getItem('wordleUsageData');
-        if (stored) {
-            return JSON.parse(stored);
-        }
-        return {
-            wordSuccessRate: {},
-            wordUsageCount: {},
-            positionSuccess: {},
-            averageAttempts: [],
-            totalGames: 0
-        };
-    }
-    
-    saveUsageData() {
-        localStorage.setItem('wordleUsageData', JSON.stringify(this.usageData));
-    }
-    
-    logWordPerformance(word, wasSuccessful, attemptNumber) {
-        if (!this.usageData.wordSuccessRate[word]) {
-            this.usageData.wordSuccessRate[word] = { success: 0, total: 0 };
-        }
-        
-        this.usageData.wordSuccessRate[word].total++;
-        if (wasSuccessful) {
-            this.usageData.wordSuccessRate[word].success++;
-        }
-        
-        this.usageData.wordUsageCount[word] = (this.usageData.wordUsageCount[word] || 0) + 1;
-        
-        this.saveUsageData();
-    }
-    
-    logGameComplete(totalAttempts) {
-        this.usageData.averageAttempts.push(totalAttempts);
-        this.usageData.totalGames++;
-        
-        if (this.usageData.averageAttempts.length > 100) {
-            this.usageData.averageAttempts.shift();
-        }
-        
-        this.saveUsageData();
     }
     
     async init() {
         await this.loadWords();
         this.setupEventListeners();
+        this.initDarkMode();
+        this.initHelpModal();
         this.updateDisplay();
     }
     
@@ -82,95 +38,22 @@ class WordleSolver {
             this.possibleWords = [...this.allWords];
             this.lastValidSuggestions = [...this.allWords];
             
-            document.getElementById('wordCount').textContent = `${this.allWords.length.toLocaleString()} words loaded`;
+            document.getElementById('wordCount').textContent = `${this.allWords.length.toLocaleString()} words`;
             this.updateDisplay();
         } catch (error) {
             console.error('Error loading words:', error);
             this.allWords = this.getExtraWords();
             this.possibleWords = [...this.allWords];
             this.lastValidSuggestions = [...this.allWords];
-            document.getElementById('wordCount').textContent = `${this.allWords.length.toLocaleString()} words loaded`;
+            document.getElementById('wordCount').textContent = `${this.allWords.length.toLocaleString()} words`;
         }
     }
     
     getExtraWords() {
         return [
-            'about', 'above', 'abuse', 'actor', 'acute', 'admit', 'adopt', 'adult',
-            'after', 'again', 'agent', 'agree', 'ahead', 'alarm', 'album', 'alert',
-            'alien', 'align', 'alike', 'alive', 'allow', 'alone', 'along', 'alter',
-            'angel', 'anger', 'angle', 'angry', 'apart', 'apple', 'apply', 'arena',
-            'argue', 'arise', 'array', 'arrow', 'aside', 'asset', 'audio', 'audit',
-            'avoid', 'awake', 'award', 'aware', 'badly', 'baker', 'bases', 'basic',
-            'basis', 'beach', 'began', 'begin', 'being', 'below', 'bench', 'billy',
-            'birth', 'black', 'blade', 'blame', 'blank', 'blast', 'bleed', 'blend',
-            'bless', 'blind', 'block', 'blood', 'bloom', 'board', 'boost', 'booth',
-            'bound', 'brain', 'brand', 'bread', 'break', 'breed', 'brief', 'bring',
-            'broad', 'broke', 'brown', 'brush', 'buddy', 'build', 'built', 'bunch',
-            'buyer', 'cable', 'calif', 'carry', 'catch', 'cause', 'chain', 'chair',
-            'chaos', 'charm', 'chart', 'chase', 'cheap', 'cheat', 'check', 'chest',
-            'chief', 'child', 'china', 'chose', 'civil', 'claim', 'class', 'clean',
-            'clear', 'click', 'climb', 'clock', 'close', 'cloud', 'coach', 'coast',
-            'could', 'count', 'court', 'cover', 'crack', 'craft', 'crash', 'crazy',
-            'cream', 'crime', 'cross', 'crowd', 'crown', 'crude', 'curve', 'cycle',
-            'daily', 'dance', 'dated', 'dealt', 'death', 'debut', 'delay', 'depth',
-            'doing', 'doubt', 'dozen', 'draft', 'drama', 'drank', 'drawn', 'dream',
-            'dress', 'drill', 'drink', 'drive', 'drove', 'dying', 'eager', 'early',
-            'earth', 'eight', 'elite', 'empty', 'enemy', 'enjoy', 'enter', 'entry',
-            'equal', 'error', 'event', 'every', 'exact', 'exist', 'extra', 'faith',
-            'false', 'fault', 'fence', 'fever', 'fewer', 'fiber', 'field', 'fifth',
-            'fifty', 'fight', 'final', 'first', 'flash', 'fleet', 'flesh', 'flight',
-            'float', 'flood', 'floor', 'flour', 'flows', 'fluid', 'focus', 'force',
-            'forth', 'forty', 'forum', 'found', 'frame', 'frank', 'fraud', 'fresh',
-            'front', 'fruit', 'fully', 'funny', 'giant', 'given', 'glass', 'globe',
-            'glory', 'grace', 'grade', 'grain', 'grand', 'grant', 'graph', 'grass',
-            'grave', 'great', 'green', 'gross', 'group', 'grown', 'guard', 'guess',
-            'guest', 'guide', 'guild', 'habit', 'happy', 'harry', 'harsh', 'heart',
-            'heavy', 'hence', 'henry', 'horse', 'hotel', 'house', 'human', 'ideal',
-            'image', 'imply', 'index', 'inner', 'input', 'issue', 'james', 'japan',
-            'jimmy', 'joint', 'jones', 'judge', 'juice', 'known', 'label', 'labor',
-            'large', 'laser', 'later', 'laugh', 'layer', 'learn', 'lease', 'least',
-            'leave', 'legal', 'lemon', 'level', 'lewis', 'light', 'limit', 'links',
-            'lives', 'local', 'logic', 'loose', 'lower', 'lucky', 'lunch', 'lying',
-            'magic', 'major', 'maker', 'march', 'maria', 'match', 'maybe', 'mayor',
-            'meant', 'media', 'metal', 'might', 'minor', 'minus', 'mixed', 'model',
-            'money', 'month', 'moral', 'motor', 'mount', 'mouse', 'mouth', 'moved',
-            'movie', 'music', 'needs', 'nerve', 'never', 'newly', 'night', 'noise',
-            'north', 'noted', 'novel', 'nurse', 'occur', 'ocean', 'offer', 'often',
-            'order', 'other', 'ought', 'paint', 'panel', 'paper', 'party', 'peace',
-            'peter', 'phase', 'phone', 'photo', 'piano', 'piece', 'pilot', 'pitch',
-            'place', 'plain', 'plane', 'plant', 'plate', 'point', 'pound', 'power',
-            'press', 'price', 'pride', 'prime', 'print', 'prior', 'prize', 'proof',
-            'proud', 'prove', 'queen', 'quick', 'quiet', 'quite', 'radio', 'raise',
-            'rally', 'ranch', 'range', 'rapid', 'ratio', 'reach', 'ready', 'realm',
-            'refer', 'relax', 'reply', 'rider', 'ridge', 'rifle', 'right', 'rigid',
-            'rival', 'river', 'robin', 'roger', 'roman', 'rough', 'round', 'route',
-            'royal', 'rural', 'scale', 'scene', 'scope', 'score', 'sense', 'serve',
-            'seven', 'shall', 'shape', 'share', 'sharp', 'sheet', 'shelf', 'shell',
-            'shift', 'shine', 'shirt', 'shock', 'shoot', 'shore', 'short', 'shown',
-            'sight', 'since', 'sixth', 'sixty', 'sized', 'skill', 'sleep', 'slide',
-            'small', 'smart', 'smile', 'smith', 'smoke', 'solid', 'solve', 'sorry',
-            'sound', 'south', 'space', 'spare', 'speak', 'speed', 'spend', 'spent',
-            'split', 'spoke', 'sport', 'staff', 'stage', 'stake', 'stand', 'start',
-            'state', 'steam', 'steel', 'stick', 'still', 'stock', 'stone', 'stood',
-            'store', 'storm', 'story', 'strip', 'stuck', 'study', 'stuff', 'style',
-            'sugar', 'suite', 'sunny', 'super', 'sweet', 'table', 'taken', 'taste',
-            'taxes', 'teach', 'terry', 'texas', 'thank', 'theft', 'their', 'theme',
-            'there', 'these', 'thick', 'thing', 'think', 'third', 'those', 'three',
-            'threw', 'throw', 'tight', 'times', 'tired', 'title', 'today', 'topic',
-            'total', 'touch', 'tough', 'tower', 'track', 'trade', 'train', 'treat',
-            'trend', 'trial', 'tribe', 'trick', 'tried', 'tries', 'troop', 'truck',
-            'truly', 'trunk', 'trust', 'truth', 'twice', 'uncle', 'under', 'union',
-            'unity', 'until', 'upper', 'upset', 'urban', 'usage', 'usual', 'valid',
-            'value', 'video', 'virus', 'visit', 'vital', 'vocal', 'voice', 'waste',
-            'watch', 'water', 'wheel', 'where', 'which', 'while', 'white', 'whole',
-            'whose', 'woman', 'women', 'world', 'worry', 'worse', 'worst', 'worth',
-            'would', 'wound', 'write', 'wrong', 'wrote', 'yield', 'young', 'youth',
-            'soare', 'roate', 'raile', 'reast', 'slate', 'sauce', 'slice', 'shale',
-            'crate', 'trace', 'crane', 'stare', 'snare', 'share', 'spare', 'scare',
-            'adieu', 'arise', 'irate', 'arose', 'stale', 'alone', 'atone', 'suite',
-            'aisle', 'anime', 'oxide', 'ounce', 'olive', 'opine', 'outre', 'ovine',
-            'uveal', 'ulnae', 'ureal', 'urate', 'unite', 'untie', 'usage', 'urine'
-        ].filter(w => w.length === 5);
+            'soare', 'roate', 'raise', 'arise', 'irate', 'slate', 'crane', 'stare',
+            'snare', 'share', 'spare', 'scare', 'adieu', 'audio', 'ounce', 'about'
+        ];
     }
     
     calculateLetterFrequency() {
@@ -195,47 +78,25 @@ class WordleSolver {
         
         for (let i = 0; i < 5; i++) {
             const letter = word[i];
-            
-            const posScore = positionFreq[i][letter] || 0;
-            score += posScore * 2;
+            score += (positionFreq[i][letter] || 0) * 2;
             
             if (!usedLetters.has(letter)) {
-                const freqScore = letterFreq[letter] || 0;
-                score += freqScore;
+                score += letterFreq[letter] || 0;
                 usedLetters.add(letter);
             }
         }
         
-        const uniqueLetters = new Set(word.split('')).size;
-        score += uniqueLetters * 50;
+        score += new Set(word.split('')).size * 50;
         
         const vowels = (word.match(/[aeiou]/g) || []).length;
-        if (vowels >= 2 && vowels <= 3) {
-            score += 100;
-        }
-        
-        const commonPairs = ['st', 'th', 'ch', 'sh', 'er', 'an', 'in', 'on', 'at', 'or'];
-        commonPairs.forEach(pair => {
-            if (word.includes(pair)) {
-                score += 30;
-            }
-        });
-        
-        if (this.usageData.wordSuccessRate[word]) {
-            const data = this.usageData.wordSuccessRate[word];
-            const successRate = data.success / data.total;
-            score += successRate * 200;
-        }
+        if (vowels >= 2 && vowels <= 3) score += 100;
         
         return score;
     }
     
     getBestSuggestion() {
         if (this.possibleWords.length === 0) {
-            if (this.lastValidSuggestions.length > 1) {
-                return this.lastValidSuggestions[1];
-            }
-            return this.lastValidSuggestions[0] || 'raise';
+            return this.lastValidSuggestions[0] || 'soare';
         }
         
         if (this.possibleWords.length === 1) {
@@ -243,33 +104,17 @@ class WordleSolver {
         }
         
         if (this.attempts.length === 0) {
-            const topStarters = ['soare', 'roate', 'raise', 'arise', 'irate', 'slate', 'crane', 'stare'];
+            const topStarters = ['soare', 'roate', 'raise', 'arise', 'irate'];
             for (const starter of topStarters) {
-                if (this.possibleWords.includes(starter)) {
-                    return starter;
-                }
+                if (this.possibleWords.includes(starter)) return starter;
             }
         }
         
-        if (this.possibleWords.length <= 20) {
-            const scoredWords = this.possibleWords.map(word => ({
-                word,
-                score: this.scoreWord(word)
-            }));
-            
-            scoredWords.sort((a, b) => b.score - a.score);
-            
-            return scoredWords[0].word;
-        }
-        
-        const sample = this.possibleWords.slice(0, Math.min(100, this.possibleWords.length));
-        const scoredWords = sample.map(word => ({
+        const scoredWords = this.possibleWords.map(word => ({
             word,
             score: this.scoreWord(word)
         }));
-        
         scoredWords.sort((a, b) => b.score - a.score);
-        
         return scoredWords[0].word;
     }
     
@@ -280,6 +125,9 @@ class WordleSolver {
         const undoBtn = document.getElementById('undoBtn');
         const resetBtn = document.getElementById('resetBtn');
         const suggestion = document.getElementById('suggestion');
+        const suggestionSticky = document.getElementById('suggestionSticky');
+        
+        if (!wordInput || !feedbackInput) return;
         
         wordInput.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
@@ -287,8 +135,8 @@ class WordleSolver {
                 const suggestedWord = document.getElementById('suggestion').textContent;
                 if (suggestedWord) {
                     wordInput.value = suggestedWord;
+                    feedbackInput.focus();
                 }
-                feedbackInput.focus();
             } else if (e.key === 'Enter') {
                 e.preventDefault();
                 feedbackInput.focus();
@@ -310,45 +158,84 @@ class WordleSolver {
             e.target.value = e.target.value.toUpperCase();
         });
         
-        analyzeBtn.addEventListener('click', () => this.processGuess());
-        undoBtn.addEventListener('click', () => this.undoLast());
-        resetBtn.addEventListener('click', () => this.reset());
-        suggestion.addEventListener('click', () => this.copySuggestion());
+        if (analyzeBtn) analyzeBtn.addEventListener('click', () => this.processGuess());
+        if (undoBtn) undoBtn.addEventListener('click', () => this.undoLast());
+        if (resetBtn) resetBtn.addEventListener('click', () => this.reset());
+        if (suggestion) suggestion.addEventListener('click', () => this.copySuggestion());
+        if (suggestionSticky) suggestionSticky.addEventListener('click', () => this.copySuggestion());
+    }
+    
+    initDarkMode() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (!darkModeToggle) return;
+        
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+    
+    initHelpModal() {
+        const helpBtn = document.getElementById('helpBtn');
+        const modal = document.getElementById('helpModal');
+        const closeModal = document.getElementById('closeModal');
+        
+        if (helpBtn && modal) {
+            helpBtn.addEventListener('click', () => {
+                modal.classList.add('show');
+            });
+            
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    modal.classList.remove('show');
+                });
+            }
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                }
+            });
+        }
     }
     
     processGuess() {
-        const word = document.getElementById('wordInput').value.trim().toLowerCase();
-        const feedback = document.getElementById('feedbackInput').value.trim().toUpperCase();
+        const wordInput = document.getElementById('wordInput');
+        const feedbackInput = document.getElementById('feedbackInput');
+        
+        if (!wordInput || !feedbackInput) return;
+        
+        const word = wordInput.value.trim().toLowerCase();
+        const feedback = feedbackInput.value.trim().toUpperCase();
         
         if (word.length !== 5) {
-            alert('Word must be exactly 5 letters');
+            this.showToast('Enter 5 letters', 'error');
             return;
         }
         
-        if (!this.isValidWord(word)) {
-            const response = confirm('Word not in dictionary. Add it and continue?');
-            if (response) {
-                this.allWords.push(word);
-                this.possibleWords.push(word);
-            } else {
-                return;
-            }
-        }
-        
         if (feedback.length !== 5) {
-            alert('Feedback must be 5 characters');
+            this.showToast('Enter 5 feedback letters', 'error');
             return;
         }
         
         if (!/^[GYB]+$/.test(feedback)) {
-            alert('Feedback must only contain G, Y, or B');
+            this.showToast('Use only G, Y, or B', 'error');
             return;
         }
         
         if (feedback === 'GGGGG') {
-            this.logWordPerformance(word, true, this.attempts.length + 1);
-            this.logGameComplete(this.attempts.length + 1);
-            alert(`Solved in ${this.attempts.length + 1} attempts. The word was ${word.toUpperCase()}`);
+            this.showToast(`Solved in ${this.attempts.length + 1}`, 'success');
             return;
         }
         
@@ -359,24 +246,15 @@ class WordleSolver {
         this.applyFeedback(word, feedback);
         this.attempts.push({ word, feedback });
         
-        this.logWordPerformance(word, false, this.attempts.length);
+        wordInput.value = '';
+        feedbackInput.value = '';
+        wordInput.focus();
         
-        document.getElementById('wordInput').value = '';
-        document.getElementById('feedbackInput').value = '';
-        document.getElementById('wordInput').focus();
-        
-        document.getElementById('undoBtn').disabled = false;
+        const undoBtn = document.getElementById('undoBtn');
+        if (undoBtn) undoBtn.disabled = false;
         
         this.updateHistory();
         this.updateDisplay();
-        
-        if (this.possibleWords.length === 0) {
-            alert('No exact matches found. Using next best suggestion from previous list.');
-        }
-    }
-    
-    isValidWord(word) {
-        return this.allWords.includes(word) || /^[a-z]{5}$/.test(word);
     }
     
     applyFeedback(word, feedback) {
@@ -393,15 +271,8 @@ class WordleSolver {
                 }
                 this.constraints.yellowNot[letter].add(i);
             } else if (status === 'B') {
-                let isGreenOrYellow = false;
-                if (Object.values(this.constraints.green).includes(letter)) {
-                    isGreenOrYellow = true;
-                }
-                if (this.constraints.yellow.has(letter)) {
-                    isGreenOrYellow = true;
-                }
-                
-                if (!isGreenOrYellow) {
+                if (!Object.values(this.constraints.green).includes(letter) && 
+                    !this.constraints.yellow.has(letter)) {
                     this.constraints.gray.add(letter);
                 }
             }
@@ -418,7 +289,6 @@ class WordleSolver {
             
             for (const letter of this.constraints.yellow) {
                 if (!word.includes(letter)) return false;
-                
                 if (this.constraints.yellowNot[letter]) {
                     for (const pos of this.constraints.yellowNot[letter]) {
                         if (word[pos] === letter) return false;
@@ -436,35 +306,48 @@ class WordleSolver {
     
     updateDisplay() {
         const suggestion = this.getBestSuggestion();
-        document.getElementById('suggestion').textContent = suggestion.toUpperCase();
+        const suggestionEl = document.getElementById('suggestion');
+        const suggestionSticky = document.getElementById('suggestionSticky');
         
-        const total = this.allWords.length;
+        if (suggestionEl) suggestionEl.textContent = suggestion.toUpperCase();
+        if (suggestionSticky) suggestionSticky.textContent = suggestion.toUpperCase();
+        
         const possible = this.possibleWords.length;
-        const eliminated = total - possible;
+        const eliminated = this.allWords.length - possible;
         
-        document.getElementById('possibleCount').textContent = possible.toLocaleString();
-        document.getElementById('attemptsCount').textContent = this.attempts.length;
-        document.getElementById('eliminatedCount').textContent = eliminated.toLocaleString();
-        document.getElementById('wordsCount').textContent = possible.toLocaleString();
-        document.getElementById('headerStats').textContent = `${possible.toLocaleString()} possible ${this.attempts.length} attempts`;
+        const els = {
+            possibleCount: document.getElementById('possibleCount'),
+            attemptsCount: document.getElementById('attemptsCount'),
+            eliminatedCount: document.getElementById('eliminatedCount'),
+            wordsCount: document.getElementById('wordsCount'),
+            headerStats: document.getElementById('headerStats'),
+            wordsList: document.getElementById('wordsList')
+        };
         
-        const wordsList = document.getElementById('wordsList');
-        if (possible === 0) {
-            wordsList.textContent = 'No exact matches. Using fallback suggestions.';
-        } else if (possible <= 200) {
-            let html = '';
-            for (let i = 0; i < possible; i += 5) {
-                const words = this.possibleWords.slice(i, i + 5);
-                html += words.map(w => w.toUpperCase().padEnd(7)).join('') + '\n';
+        if (els.possibleCount) els.possibleCount.textContent = possible.toLocaleString();
+        if (els.attemptsCount) els.attemptsCount.textContent = this.attempts.length;
+        if (els.eliminatedCount) els.eliminatedCount.textContent = eliminated.toLocaleString();
+        if (els.wordsCount) els.wordsCount.textContent = possible.toLocaleString();
+        if (els.headerStats) els.headerStats.textContent = `${possible.toLocaleString()} • ${this.attempts.length}`;
+        
+        if (els.wordsList) {
+            if (possible === 0) {
+                els.wordsList.textContent = 'No matches';
+            } else if (possible <= 200) {
+                let html = '';
+                for (let i = 0; i < possible; i += 5) {
+                    const words = this.possibleWords.slice(i, i + 5);
+                    html += words.map(w => w.toUpperCase().padEnd(7)).join('') + '\n';
+                }
+                els.wordsList.textContent = html;
+            } else {
+                let html = `Showing 150 of ${possible.toLocaleString()}:\n\n`;
+                for (let i = 0; i < 150; i += 5) {
+                    const words = this.possibleWords.slice(i, i + 5);
+                    html += words.map(w => w.toUpperCase().padEnd(7)).join('') + '\n';
+                }
+                els.wordsList.textContent = html;
             }
-            wordsList.textContent = html;
-        } else {
-            let html = `Showing 150 of ${possible.toLocaleString()} words\n\n`;
-            for (let i = 0; i < 150; i += 5) {
-                const words = this.possibleWords.slice(i, i + 5);
-                html += words.map(w => w.toUpperCase().padEnd(7)).join('') + '\n';
-            }
-            wordsList.textContent = html;
         }
     }
     
@@ -472,33 +355,27 @@ class WordleSolver {
         const container = document.getElementById('historyContainer');
         const count = document.getElementById('attemptCount');
         
+        if (!container || !count) return;
+        
         if (this.attempts.length === 0) {
-            container.innerHTML = '<p class="empty-state">No attempts yet. Enter your first guess above</p>';
-            count.textContent = '0 attempts';
+            container.innerHTML = '<p class="empty-state">No attempts yet</p>';
+            count.textContent = '0';
             return;
         }
         
-        count.textContent = `${this.attempts.length} attempt${this.attempts.length > 1 ? 's' : ''}`;
+        count.textContent = `${this.attempts.length}`;
         
         let html = '';
         this.attempts.forEach((attempt, i) => {
-            html += `<div class="history-item">`;
-            html += `<span class="history-number">${i + 1}.  </span>`;
-            
+            html += '<div class="history-item">';
+            html += `<span class="history-number">${i + 1}.</span>`;
             for (let j = 0; j < 5; j++) {
                 const letter = attempt.word[j].toUpperCase();
                 const status = attempt.feedback[j];
-                
-                if (status === 'G') {
-                    html += `<span class="letter-green">${letter}</span> `;
-                } else if (status === 'Y') {
-                    html += `<span class="letter-yellow">${letter}</span> `;
-                } else {
-                    html += `<span class="letter-gray">${letter}</span> `;
-                }
+                const className = status === 'G' ? 'letter-green' : status === 'Y' ? 'letter-yellow' : 'letter-gray';
+                html += `<span class="${className}">${letter}</span>`;
             }
-            
-            html += `</div>`;
+            html += '</div>';
         });
         
         container.innerHTML = html;
@@ -508,7 +385,6 @@ class WordleSolver {
         if (this.attempts.length === 0) return;
         
         this.attempts.pop();
-        
         this.possibleWords = [...this.allWords];
         this.constraints = {
             green: {},
@@ -525,19 +401,19 @@ class WordleSolver {
             this.lastValidSuggestions = [...this.possibleWords];
         }
         
-        if (this.attempts.length === 0) {
-            document.getElementById('undoBtn').disabled = true;
+        const undoBtn = document.getElementById('undoBtn');
+        if (this.attempts.length === 0 && undoBtn) {
+            undoBtn.disabled = true;
         }
         
         this.updateHistory();
         this.updateDisplay();
+        this.showToast('Undone', 'info');
     }
     
     reset() {
         if (this.attempts.length > 0) {
-            if (!confirm('Start a new game? This will clear all progress.')) {
-                return;
-            }
+            if (!confirm('Reset and start over?')) return;
         }
         
         this.attempts = [];
@@ -550,20 +426,43 @@ class WordleSolver {
             yellowNot: {}
         };
         
-        document.getElementById('wordInput').value = '';
-        document.getElementById('feedbackInput').value = '';
-        document.getElementById('undoBtn').disabled = true;
+        const wordInput = document.getElementById('wordInput');
+        const feedbackInput = document.getElementById('feedbackInput');
+        const undoBtn = document.getElementById('undoBtn');
+        
+        if (wordInput) wordInput.value = '';
+        if (feedbackInput) feedbackInput.value = '';
+        if (undoBtn) undoBtn.disabled = true;
         
         this.updateHistory();
         this.updateDisplay();
     }
     
     copySuggestion() {
-        const suggestion = document.getElementById('suggestion').textContent;
-        if (suggestion) {
-            document.getElementById('wordInput').value = suggestion;
-            document.getElementById('wordInput').focus();
+        const suggestion = document.getElementById('suggestion');
+        const wordInput = document.getElementById('wordInput');
+        const feedbackInput = document.getElementById('feedbackInput');
+        
+        if (suggestion && wordInput && feedbackInput) {
+            wordInput.value = suggestion.textContent;
+            feedbackInput.focus();
         }
+    }
+    
+    showToast(message, type = 'info') {
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('toast-show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('toast-show');
+            setTimeout(() => toast.remove(), 200);
+        }, 2000);
     }
 }
 

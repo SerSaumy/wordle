@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordle Solver - AI Assistant</title>
+    <title>Wordle Solver</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
-    
-    <link rel="preconnect" href="https://gist.githubusercontent.com">
-    <link rel="dns-prefetch" href="https://gist.githubusercontent.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔤</text></svg>">
 </head>
 <body>
     <header>
@@ -16,23 +13,43 @@
             <div class="header-content">
                 <div class="logo">
                     <h1><span class="logo-bold">Wordle</span> <span class="logo-light">Solver</span></h1>
-                    <p class="subtitle" id="wordCount">Loading word database...</p>
+                    <p class="subtitle" id="wordCount">Loading...</p>
                 </div>
                 <div class="header-actions">
-                    <span id="headerStats" class="header-stats">Ready to solve</span>
-                    <button id="resetBtn" class="btn btn-reset">
-                        <span>↻</span> New Game
+                    <span id="headerStats" class="header-stats">Ready</span>
+                    <button id="helpBtn" class="btn btn-toggle" aria-label="Help" title="How to use">
+                        <span class="help-icon">?</span>
+                    </button>
+                    <button id="darkModeToggle" class="btn btn-toggle" aria-label="Toggle theme" title="Toggle theme">
+                        <span class="theme-icon">
+                            <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                            </svg>
+                            <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="5"/>
+                                <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <button id="resetBtn" class="btn btn-reset" title="New game">
+                        ↻
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="container" id="main-content" role="main">
-        <!-- Sticky suggestion bar for mobile -->
+    <main class="container">
         <div class="suggestion-sticky">
             <div class="suggestion-sticky-content">
-                <span class="suggestion-label">Next Word</span>
+                <span class="suggestion-label">Try</span>
                 <div id="suggestionSticky" class="suggestion-word-sticky">SOARE</div>
             </div>
         </div>
@@ -40,93 +57,73 @@
         <div class="grid">
             <div class="left-column">
                 <div class="card">
-                    <h2>Enter Your Guess</h2>
-                    <p class="description">Type the word you guessed in Wordle</p>
+                    <h2>Your Guess</h2>
                     
                     <input 
                         type="text" 
-                        id="wordInputDesktop" 
+                        id="wordInput" 
                         class="input-field" 
-                        placeholder="Type word here..."
+                        placeholder="5 letters"
                         maxlength="5"
                         autocomplete="off"
+                        spellcheck="false"
                     >
-                    
-                    <div class="keyboard-hints">
-                        <span class="hint-icon">⌨</span>
-                        <span class="kbd">Tab</span>
-                        <span class="hint-text">= use suggestion  •  </span>
-                        <span class="kbd">Enter</span>
-                        <span class="hint-text">= use typed word</span>
-                    </div>
 
-                    <h2 style="margin-top: 30px;">Enter Feedback Pattern</h2>
-                    <p class="description">Use: G (Green), Y (Yellow), B (Black/Gray)</p>
+                    <h2 style="margin-top: 30px;">Result</h2>
                     
-                    <div class="info-box">
-                        <span class="info-icon">💡</span>
-                        Example: "GYBBB" = Green, Yellow, Black, Black, Black
-                    </div>
-
                     <input 
                         type="text" 
-                        id="feedbackInputDesktop" 
+                        id="feedbackInput" 
                         class="input-field" 
-                        placeholder="e.g., GYBBB"
+                        placeholder="G=🟩 Y=🟨 B=⬛"
                         maxlength="5"
                         autocomplete="off"
+                        spellcheck="false"
                     >
-
-                    <div class="keyboard-hints">
-                        <span class="hint-icon">⌨</span>
-                        <span class="kbd">Enter</span>
-                        <span class="hint-text">= analyze guess</span>
-                    </div>
 
                     <div class="button-row">
                         <button id="analyzeBtn" class="btn btn-primary">
-                            <span>✓</span> Analyze Guess
+                            Analyze
                         </button>
                         <button id="undoBtn" class="btn btn-danger" disabled>
-                            <span>↶</span> Undo Last
+                            Undo
                         </button>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h2>Attempt History</h2>
-                        <span id="attemptCount" class="count-badge">0 attempts</span>
+                        <h2>History</h2>
+                        <span id="attemptCount" class="count-badge">0</span>
                     </div>
                     <div id="historyContainer" class="history-container">
-                        <p class="empty-state">No attempts yet. Enter your first guess above!</p>
+                        <p class="empty-state">No attempts yet</p>
                     </div>
                 </div>
             </div>
 
             <div class="right-column">
                 <div class="card suggestion-card">
-                    <h2>Recommended Word</h2>
-                    <p class="description">Press Tab in word field to use this</p>
+                    <h2>Next Word</h2>
                     
                     <div class="suggestion-box">
-                        <div id="suggestion" class="suggestion-word">SOARE</div>
+                        <div id="suggestion" class="suggestion-word" title="Click to use">SOARE</div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h2>Statistics</h2>
+                    <h2>Stats</h2>
                     <div class="stats-grid">
                         <div class="stat-item stat-primary">
-                            <span class="stat-label">Possible Words</span>
+                            <span class="stat-label">Possible</span>
                             <span id="possibleCount" class="stat-value">12,972</span>
                         </div>
                         <div class="stat-item stat-success">
-                            <span class="stat-label">Attempts Made</span>
+                            <span class="stat-label">Attempts</span>
                             <span id="attemptsCount" class="stat-value">0</span>
                         </div>
                         <div class="stat-item stat-gray">
-                            <span class="stat-label">Words Eliminated</span>
+                            <span class="stat-label">Eliminated</span>
                             <span id="eliminatedCount" class="stat-value">0</span>
                         </div>
                     </div>
@@ -134,42 +131,50 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h2>Possible Words</h2>
+                        <h2>Words</h2>
                         <span id="wordsCount" class="count-badge primary">12,972</span>
                     </div>
-                    <div id="wordsList" class="words-list">
-                        Loading words...
-                    </div>
+                    <div id="wordsList" class="words-list">Loading...</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Mobile Stats (Below Input) -->
-        <div class="mobile-stats">
-            <div class="stat-box">
-                <span id="possibleCountMobile" class="stat-num">12k</span>
-                <span class="stat-label">Possible</span>
-            </div>
-            <div class="stat-box">
-                <span id="attemptsCountMobile" class="stat-num">0</span>
-                <span class="stat-label">Tries</span>
-            </div>
-        </div>
-
-        <!-- Mobile History -->
-        <div class="mobile-history">
-            <h3>History <span id="attemptCountMobile" class="badge">0</span></h3>
-            <div id="historyContainerMobile" class="history-list">
-                <p class="empty-text">No attempts yet</p>
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>Made for Wordle enthusiasts • <a href="https://github.com/sersaumy/wordle" target="_blank">View on GitHub</a></p>
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>How to Use</h2>
+                <button id="closeModal" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h3>1. Enter your Wordle guess</h3>
+                    <p>Type the 5-letter word you used</p>
+                </div>
+                
+                <div class="help-section">
+                    <h3>2. Enter the result</h3>
+                    <p>Use: <strong>G</strong> for 🟩 green, <strong>Y</strong> for 🟨 yellow, <strong>B</strong> for ⬛ gray</p>
+                    <div class="example">Example: STARE → 🟩⬛🟨⬛⬛ = <strong>GBYBB</strong></div>
+                </div>
+                
+                <div class="help-section">
+                    <h3>3. Get next suggestion</h3>
+                    <p>The solver will recommend the best next word based on remaining possibilities</p>
+                </div>
+                
+                <div class="help-section shortcuts">
+                    <h3>Keyboard Shortcuts</h3>
+                    <div class="shortcut-list">
+                        <div><kbd>Tab</kbd> Use suggestion</div>
+                        <div><kbd>Enter</kbd> Next field / Analyze</div>
+                        <div><kbd>Escape</kbd> Close help</div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
 
     <script src="app.js"></script>
 </body>
